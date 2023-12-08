@@ -1,22 +1,22 @@
 import { StringHelper } from "../helpers/StringHelper";
 import { ArrayHelper } from "../helpers/ArrayHelper";
 import { ColorHelper } from "../helpers/ColorHelper";
-import { Vector3D } from "../math/Vector3D";
-import { Vector2D } from "../math/Vector2D";
+import { RealNumberVector } from "../math/RealNumberVector";
+import { RealNumberVector } from "../math/RealNumberVector";
 
 export class OBJMesh
 {
     public materialIndex: number;
-    public vertexArray: Array<Vector3D>;
-    public normalArray: Array<Vector3D>;
-    public textureCoordinateArray: Array<Vector2D>;
+    public vertexArray: Array<RealNumberVector>;
+    public normalArray: Array<RealNumberVector>;
+    public textureCoordinateArray: Array<RealNumberVector>;
 
     public constructor(objFileContents?: string)
     {
         this.materialIndex = -1;
-        this.vertexArray = new Array<Vector3D>();
-        this.normalArray = new Array<Vector3D>();
-        this.textureCoordinateArray = new Array<Vector2D>();
+        this.vertexArray = new Array<RealNumberVector>();
+        this.normalArray = new Array<RealNumberVector>();
+        this.textureCoordinateArray = new Array<RealNumberVector>();
 
     }
 
@@ -48,7 +48,7 @@ export class OBJMesh
             {
                 try 
                 {
-                    let textureCoordinate: Vector2D = new Vector2D();
+                    let textureCoordinate: RealNumberVector = new RealNumberVector();
                     textureCoordinate.setFromDelimetedString(linesArray[i]);
                     this.textureCoordinateArray.push(textureCoordinate);
                 }
@@ -63,7 +63,7 @@ export class OBJMesh
             {
                 try 
                 {
-                    let perpendicularVector: Vector3D = new Vector3D();
+                    let perpendicularVector: RealNumberVector = new RealNumberVector();
                     perpendicularVector.setFromDelimetedString(linesArray[i]);
                     this.normalArray.push(perpendicularVector);
                 }
@@ -78,7 +78,7 @@ export class OBJMesh
             {
                 try 
                 {
-                    let vertex: Vector3D = new Vector3D();
+                    let vertex: RealNumberVector = new RealNumberVector();
                     vertex.setFromDelimetedString(linesArray[i]);
                     this.vertexArray.push(vertex);
                 }

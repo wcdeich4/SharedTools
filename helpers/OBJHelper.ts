@@ -80,7 +80,7 @@ export abstract class OBJHelper
     //                   for (let index = 1; index < currentLineTokens.length; index++) 
     //                   {
     //                     //use x y class?
-    //                     //add    public setFromOJFileLine(line: string): string  method to Vector2D.ts????
+    //                     //add    public setFromOJFileLine(line: string): string  method to RealNumberVector.ts????
     //                     //or make it more generic ?
     //                     temporaryTextureCoordinateArray.push(parseFloat(currentLineTokens[index]));
                         

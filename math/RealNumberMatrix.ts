@@ -3,7 +3,6 @@ import { GenericMatrix } from './GenericMatrix';
 import { GenericVector } from './GenericVector';
 import { ICloneable } from './ICloneable';
 import { RealNumberVector } from './RealNumberVector';
-import { Vector3D } from './Vector3D';
 export class RealNumberMatrix extends GenericMatrix<number> implements ICloneable<RealNumberMatrix>
 {
     /**
@@ -41,20 +40,24 @@ export class RealNumberMatrix extends GenericMatrix<number> implements ICloneabl
      * create look at matrix like in OpenGL, except row-major math is the default.
      * https://www.geertarien.com/blog/2017/07/30/breakdown-of-the-lookAt-function-in-OpenGL
      * https://medium.com/@carmencincotti/lets-look-at-magic-lookat-matrices-c77e53ebdf78
-     * @param cameraPosition {Vector3D} camera poisition in 3D cartesian coordinates
-     * @param focalPoint {Vector3D} point to look at in 3D cartesian coordinates
-     * @param upVector {Vector3D} up vector in 3D cartesian coordinates (approximate is ok)
+     * @param cameraPosition {RealNumberVector} camera poisition in 3D cartesian coordinates
+     * @param focalPoint {RealNumberVector} point to look at in 3D cartesian coordinates
+     * @param upVector {RealNumberVector} up vector in 3D cartesian coordinates (approximate is ok)
      * @param columnMajorOutput {boolean}
      * @returns {RealNumberMatrix} look at matrix
      */
-    public static getLookAtMatrix(cameraPosition: Vector3D, focalPoint: Vector3D, upVector: Vector3D, columnMajorOutput: boolean = false ): RealNumberMatrix
+    public static getLookAtMatrix(cameraPosition: RealNumberVector, focalPoint: RealNumberVector, upVector: RealNumberVector, columnMajorOutput: boolean = false ): RealNumberMatrix
     {
-        const cameraZAxis: Vector3D = <Vector3D>focalPoint.getDifferenceWith(cameraPosition) as Vector3D; //aka forward vector
+        const cameraZAxis: RealNumberVector = <RealNumberVector>focalPoint.getDifferenceWith(cameraPosition) as RealNumberVector; //aka forward vector
         cameraZAxis.normalize();
-        const cameraXAxis: Vector3D = cameraZAxis.crossProduct(upVector); //aka right vector
+
+        const cameraXAxis: RealNumberVector = cameraZAxis.crossProduct(upVector); //aka right vector
         cameraXAxis.normalize();
-        const cameraYAxis: Vector3D = cameraXAxis.crossProduct(cameraZAxis); //aka camera up ?
+
+        
+        const cameraYAxis: RealNumberVector = cameraXAxis.crossProduct(cameraZAxis); //aka camera up ?
         cameraZAxis.negate();
+
 
         const result = new RealNumberMatrix(null, 3, null);
         result.setRow(0, cameraXAxis);
@@ -68,9 +71,19 @@ export class RealNumberMatrix extends GenericMatrix<number> implements ICloneabl
         result.setElement(1, 3, translationY);
         result.setElement(2, 3, translationZ);
 
-        result.setElement(3, 0, translationZ);
-        result.setElement(3, 1, translationZ);
-        result.setElement(3, 2, translationZ);
+
+console.log('cameraPosition, cameraZAxis, cameraXAxis, cameraYxis = ');
+cameraPosition.log();
+cameraZAxis.log();
+cameraXAxis.log();
+cameraYAxis.log();
+
+
+console.log('translation= ' + translationX + ' ' + translationX + ' ' + translationZ);
+
+        result.setElement(3, 0, 0);
+        result.setElement(3, 1, 0);
+        result.setElement(3, 2, 0);
         result.setElement(3, 3, 1);
 
         if (columnMajorOutput)
@@ -200,38 +213,47 @@ export class RealNumberMatrix extends GenericMatrix<number> implements ICloneabl
             return result;
         }
     }
-    
 
     /**
      * Multiply by a GenericVector<number> on the right hand side
      * @param {GenericVector<number>} rightSideVector - vector to multiply by
+     * @param useHomogeniusEfficencyHack {boolean} browsers run out of memory fast, so we may not ant to store the homogenous 1 at the end of vectors. But we need the math to work out the same.
      * @throws error if the number of rows of this mtrix does not equal the number of columns of the other matrix
      */
-    public multiplyByVectorOnRight(rightSideVector: GenericVector<number>): RealNumberVector
+    public multiplyByVectorOnRight(rightSideVector: GenericVector<number>, useHomogeniusEfficencyHack:boolean = true): RealNumberVector
     {
-        const vectorLength = rightSideVector.elements.length;
-        if (this.getNumberOfColumns() !== vectorLength)
-        {
-            throw new Error('Matrix Vector column mismatch.  Cannot multiply/transform vector.');
-        }
-        else
-        {
+        const limit = Math.min(this.getNumberOfColumns(), rightSideVector.elements.length );
+
+       // const vectorLength = rightSideVector.elements.length;
+        // if (this.getNumberOfColumns() !== vectorLength)
+        // {
+        //     throw new Error('Matrix Vector column mismatch.  Cannot multiply/transform vector.');
+        // }
+        // else
+        // {
             const result = new RealNumberVector(null, rightSideVector.elements.length);
-            let sum: number;
+            let sum: number, i: number;
             for(let row = 0; row < this.getNumberOfRows(); row++ )
             {
                 // for (let column = 0; column < rightSideMatrix.getNumberOfColumns(); column++)
                 // {
                     sum = 0;
-                    for (let i = 0; i < vectorLength; i++) 
+                    i = 0;
+                    while(i < limit) 
                     {
                         sum += this.elements[row][i]*rightSideVector.elements[i];
+                        i++;
+                    }
+                    if (useHomogeniusEfficencyHack && ( this.getNumberOfColumns() > rightSideVector.elements.length ))
+                    {
+                        sum += this.elements[row][limit] ;
                     }
                     result.elements[row] = sum;
                // }
             }
+
             return result;
-        }
+      //  }
     }
 
     /**

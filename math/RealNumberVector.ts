@@ -26,6 +26,68 @@ export class RealNumberVector extends GenericVector<number> implements ICloneabl
         }
     }
 
+    public log(): void
+    {
+        console.log(this.elements);
+    }
+
+    //2D Methods
+
+    /**
+     * get perpendicular vector in clockwise direction
+     * @returns RealNumberVector
+     */
+    public getPerpendicularClockwise(): RealNumberVector
+    {
+        return new RealNumberVector([this.elements[1], -this.elements[0]]);
+    }
+
+    /**
+     * get perpendicular vector in counter-clockwise direction
+     * @returns RealNumberVector
+     */
+    public getPerpendicularCounterClockwise(): RealNumberVector
+    {
+        return new RealNumberVector([ -this.elements[1], this.elements[0] ]);
+    }
+
+    /**
+     * true if z component is zero
+     * @returns boolean
+     */
+    public is2D(): boolean
+    {
+        return this.elements[2]=== 0;
+    }
+
+    // /**
+    //  * get just x and y
+    //  * @returns RealNumberVector
+    //  */
+    // public to2D(): RealNumberVector
+    // {
+    //     return new RealNumberVector(this.elements[0], this.elements[1]); 
+    // }
+
+
+    // 3D Methods
+
+    /**
+     * Get the right handed cross product of this vector and another vector
+     * @param {GenericVector<number>} otherVector to get cross product with
+     * @returns {RealNumberVector} right handed cross product vector
+     */
+    public crossProduct(otherVector: GenericVector<number>): RealNumberVector
+    {
+       // throw new Error('wrong for homogenous vectors because they need an extra 1???????????????????????????????????');
+
+        return new RealNumberVector([this.elements[1] * otherVector.elements[2] - this.elements[2] * otherVector.elements[1] ,
+                            this.elements[2] * otherVector.elements[0] - this.elements[0] * otherVector.elements[2] ,
+                            this.elements[0] * otherVector.elements[1] - this.elements[1] * otherVector.elements[0]]);
+    }
+
+    //other methods
+
     /**
       * set the elements from a delimited string, ignoring non-numeric string elements
       * @param {string} line a delimited string
@@ -34,7 +96,7 @@ export class RealNumberVector extends GenericVector<number> implements ICloneabl
     public setFromDelimetedString(line: string, delimeter: string = ' '): void
     {
         let currentLineTokens: Array<string> = null;
-        console.log(' line = ' + line);
+      //  console.log(' line = ' + line);
         if (!StringHelper.isUndefinedOrNullOrEmptyOrWhitespace(line))
         {
             
@@ -68,7 +130,7 @@ export class RealNumberVector extends GenericVector<number> implements ICloneabl
                 // {
 
 
-                console.log(currentLineTokens);
+              //  console.log(currentLineTokens);
 
 
                     //this.elements = null; //probably not necessary

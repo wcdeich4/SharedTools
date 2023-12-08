@@ -1,13 +1,154 @@
 import { Point2D } from './Point2D';
+import { Probability } from './Probability';
 import { RealNumberMatrix } from './RealNumberMatrix';
 import { RealNumberVector } from './RealNumberVector';
 
 describe('RealNumberMatrix tests', () => {
 
-  it('RealNumberMatrix.getLookAtMatrix', () => {
+  it('RealNumberMatrix.getLookAtMatrix x-axis camera', () => {
+    const cameraPosition = new RealNumberVector([10, 0, 0]);
+    const origin = new RealNumberVector([0, 0, 0]);
+    const focalPoint = <RealNumberVector>origin;
+    const upVector = new RealNumberVector([0, 0, 1]);
+    
+    const lookAtMatrix = RealNumberMatrix.getLookAtMatrix(cameraPosition, focalPoint, upVector);
+    const point1 = new RealNumberVector([5, 0, 0]);
+    const projectedPoint = lookAtMatrix.multiplyByVectorOnRight(point1, true);
 
+//expect(projectedPoint.equals(origin) ).toEqual(true);
+expect(projectedPoint.elements[0] ).toEqual(origin.elements[0]);
+expect(projectedPoint.elements[1] ).toEqual(origin.elements[1]);
+
+//make other projection matrix to compare??
+ });
+
+ it('RealNumberMatrix.getLookAtMatrix negative x-axis camera', () => {
+  const cameraPosition = new RealNumberVector([-10, 0, 0]);
+  const origin = new RealNumberVector([0, 0, 0]);
+  const focalPoint = <RealNumberVector>origin;
+  const upVector = new RealNumberVector([0, 0, 1]);
+  
+  const lookAtMatrix = RealNumberMatrix.getLookAtMatrix(cameraPosition, focalPoint, upVector);
+  const point1 = new RealNumberVector([-5, 0, 0]);
+  const projectedPoint = lookAtMatrix.multiplyByVectorOnRight(point1, true);
+
+//expect(projectedPoint.equals(origin) ).toEqual(true);
+expect(projectedPoint.elements[0] ).toEqual(origin.elements[0]);
+expect(projectedPoint.elements[1] ).toEqual(origin.elements[1]);
+});
+
+it('RealNumberMatrix.getLookAtMatrix first octant camera', () => {
+  const cameraPosition = new RealNumberVector([10, 10, 10]);
+  const origin = new RealNumberVector([0, 0, 0]);
+  const focalPoint = <RealNumberVector>origin;
+  const upVector = new RealNumberVector([0, 0, 1]);
+  
+  const lookAtMatrix = RealNumberMatrix.getLookAtMatrix(cameraPosition, focalPoint, upVector);
+  const point1 = new RealNumberVector([5, 5, 5]);
+  const projectedPoint = lookAtMatrix.multiplyByVectorOnRight(point1, true);
+
+//expect(projectedPoint.equals(origin) ).toEqual(true);
+expect(projectedPoint.elements[0] ).toEqual(origin.elements[0]);
+expect(projectedPoint.elements[1] ).toEqual(origin.elements[1]);
+
+//make other projection matrix to compare??
+});
+
+ it('RealNumberMatrix.getLookAtMatrix y-axis camera', () => {
+  const cameraPosition = new RealNumberVector([0, 10, 0]);
+  const origin = new RealNumberVector([0, 0, 0]);
+  const focalPoint = <RealNumberVector>origin;
+  const upVector = new RealNumberVector([0, 0, 1]);
+  
+  const lookAtMatrix = RealNumberMatrix.getLookAtMatrix(cameraPosition, focalPoint, upVector);
+  const point1 = new RealNumberVector([0, 5, 0]);
+  const projectedPoint = lookAtMatrix.multiplyByVectorOnRight(point1, true);
+
+//expect(projectedPoint.equals(origin) ).toEqual(true);
+expect(projectedPoint.elements[0] ).toEqual(origin.elements[0]);
+expect(projectedPoint.elements[1] ).toEqual(origin.elements[1]);
+});
+
+it('RealNumberMatrix.getLookAtMatrix negative y-axis camera', () => {
+  const cameraPosition = new RealNumberVector([0, -10, 0]);
+  const origin = new RealNumberVector([0, 0, 0]);
+  const focalPoint = <RealNumberVector>origin;
+  const upVector = new RealNumberVector([0, 0, 1]);
+  
+  const lookAtMatrix = RealNumberMatrix.getLookAtMatrix(cameraPosition, focalPoint, upVector);
+  const point1 = new RealNumberVector([0, -5, 0]);
+  const projectedPoint = lookAtMatrix.multiplyByVectorOnRight(point1, true);
+
+//expect(projectedPoint.equals(origin) ).toEqual(true);
+expect(projectedPoint.elements[0] ).toEqual(origin.elements[0]);
+expect(projectedPoint.elements[1] ).toEqual(origin.elements[1]);
+});
+
+
+it('RealNumberMatrix.getLookAtMatrix z-axis camera', () => {
+  const cameraPosition = new RealNumberVector([0, 0, 10]);
+  const origin = new RealNumberVector([0, 0, 0]);
+  const focalPoint = <RealNumberVector>origin;
+  const upVector = new RealNumberVector([0, 0, 1]);
+  
+  const lookAtMatrix = RealNumberMatrix.getLookAtMatrix(cameraPosition, focalPoint, upVector);
+  const point1 = new RealNumberVector([0, 0, 5]);
+  const projectedPoint = lookAtMatrix.multiplyByVectorOnRight(point1, true);
+
+//expect(projectedPoint.equals(origin) ).toEqual(true);
+expect(projectedPoint.elements[0] ).toEqual(origin.elements[0]);
+expect(projectedPoint.elements[1] ).toEqual(origin.elements[1]);
+});
+
+it('RealNumberMatrix.getLookAtMatrix negative 3-axis camera', () => {
+  const cameraPosition = new RealNumberVector([0, 0, -10]);
+  const origin = new RealNumberVector([0, 0, 0]);
+  const focalPoint = <RealNumberVector>origin;
+  const upVector = new RealNumberVector([0, 0, 1]);
+  
+  const lookAtMatrix = RealNumberMatrix.getLookAtMatrix(cameraPosition, focalPoint, upVector);
+  const point1 = new RealNumberVector([0, 0, -5]);
+  const projectedPoint = lookAtMatrix.multiplyByVectorOnRight(point1, true);
+
+//expect(projectedPoint.equals(origin) ).toEqual(true);
+expect(projectedPoint.elements[0] ).toEqual(origin.elements[0]);
+expect(projectedPoint.elements[1] ).toEqual(origin.elements[1]);
+});
+
+
+ it('RealNumberMatrix.getLookAtMatrix test 2 singularity', () => {
+  const cameraPosition = new RealNumberVector([0, 0, 0]);
+  const origin = new RealNumberVector([0, 0, 0]);
+  const focalPoint = <RealNumberVector>origin;
+  const upVector = new RealNumberVector([0, 0, 1]);
+  
+  const lookAtMatrix = RealNumberMatrix.getLookAtMatrix(cameraPosition, focalPoint, upVector);
+
+  const vectorArray = new Array<RealNumberVector>();
+  vectorArray.push(origin);
+  const numberOfRandomPoints = 100;
+  for (let index = 0; index < numberOfRandomPoints; index++)
+  {
+    vectorArray.push(new RealNumberVector([
+      Probability.getRandomNumberInRange(-10000, 10000), 
+      Probability.getRandomNumberInRange(-10000, 10000), 
+      Probability.getRandomNumberInRange(-10000, 10000)
+    ]));
+  }
+
+  vectorArray.forEach(p => {
+    const projectedPoint = lookAtMatrix.multiplyByVectorOnRight(p);
+expect(projectedPoint.elements[0] ).toEqual(origin.elements[0]);
+expect(projectedPoint.elements[1] ).toEqual(origin.elements[1]);
 
   });
+
+//make other projection matrix to compare??
+});
+
+
+
+
 
   it('GenericMatrix.SetColumn', () => {
     const m2 = new RealNumberMatrix(null, 4, 4);

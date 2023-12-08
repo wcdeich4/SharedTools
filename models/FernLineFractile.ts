@@ -1,6 +1,6 @@
 import { MathCanvas2D } from "./MathCanvas2D";
 import { Fractile } from "./Fractile";
-import { Vector2D } from "../math/Vector2D";
+import { RealNumberVector } from "../math/RealNumberVector";
 import { RealNumberVector } from "../math/RealNumberVector";
 import { ScreenRangeConverter2D } from "../math/ScreenRangeConverter2D";
 
@@ -10,8 +10,8 @@ export class FernLineFractile extends Fractile
     public branchPointPercentage: number = 0.4;
     public scalePercentage: number = 0.6;
     public recursionDepthLimit = 5;
-    private seedPoint1: Vector2D;
-    private seedPoint2: Vector2D;
+    private seedPoint1: RealNumberVector;
+    private seedPoint2: RealNumberVector;
 
     constructor(range?: ScreenRangeConverter2D)
     {
@@ -21,8 +21,8 @@ export class FernLineFractile extends Fractile
           range = ScreenRangeConverter2D.Standard();
         }
         this.range = range;
-        this.seedPoint1 = new Vector2D(0, -10);
-        this.seedPoint2 = new Vector2D(0, 10);
+        this.seedPoint1 = new RealNumberVector(0, -10);
+        this.seedPoint2 = new RealNumberVector(0, 10);
       }
 
     public draw(mathCanvas: MathCanvas2D): void
@@ -42,10 +42,10 @@ export class FernLineFractile extends Fractile
 
       if (this.recursionDepthLimit > depth)
       {
-         // let newInbetweenPoint = vertex1.getWeightedAverageWithAnotherVector(this.branchPointPercentage, vertex2, 1 - this.branchPointPercentage) as Vector2D;
+         // let newInbetweenPoint = vertex1.getWeightedAverageWithAnotherVector(this.branchPointPercentage, vertex2, 1 - this.branchPointPercentage) as RealNumberVector;
          // newInbetweenPoint.add(vertex1);
           let sizeOfCurrentLineSegment = vertex2.getDistanceTo(vertex1);
-          let directionVector = vertex2.getDifferenceWith(vertex1) as Vector2D;
+          let directionVector = vertex2.getDifferenceWith(vertex1) as RealNumberVector;
           directionVector.normalize();
 
           let newInbetweenPoint = directionVector.clone();
@@ -57,27 +57,27 @@ export class FernLineFractile extends Fractile
           //the line segment from newInbetweenPoint to vertex2 will not change the fractile, but it makes processing easier
           // let newIndex1 = this.vertexArray.push(newInbetweenPoint) - 1;
 
-          // let cloneOfVertex2: Vector2D = vertex2.clone() as Vector2D;
+          // let cloneOfVertex2: RealNumberVector = vertex2.clone() as RealNumberVector;
           // let newIndex2 = this.vertexArray.push(cloneOfVertex2) - 1;
           // let firstNewLineSegmentIndex = this.LineSegments.push(new LineSegmentIndices(new IndexTriplet(newIndex1), new IndexTriplet(newIndex2))) - 1;
   
-          // let directionVector = newInbetweenPoint.getDifferenceWith(vertex1) as Vector2D; //how do we know it should be vertex1 in general.................?
+          // let directionVector = newInbetweenPoint.getDifferenceWith(vertex1) as RealNumberVector; //how do we know it should be vertex1 in general.................?
           // directionVector.normalize();
           // sizeOfCurrentLineSegment = vertex2.getDistanceTo(vertex1);
           // let newIndex3: number = this.vertexArray.push(newInbetweenPoint) - 1;
   
-          let prevendicularVector1: Vector2D = directionVector.getPerpendicularClockwise();
+          let prevendicularVector1: RealNumberVector = directionVector.getPerpendicularClockwise();
           prevendicularVector1.normalize();
           prevendicularVector1.multiplyByScalar(sizeOfCurrentLineSegment * this.scalePercentage * 0.5);
-          let newEndPoint1 = newInbetweenPoint.getSumWith(prevendicularVector1)  as Vector2D;
+          let newEndPoint1 = newInbetweenPoint.getSumWith(prevendicularVector1)  as RealNumberVector;
         //  let newIndex4: number = this.vertexArray.push(newEndPoint1) - 1;
   
          // this.LineSegments.push(new LineSegmentIndices(new IndexTriplet(newIndex3), new IndexTriplet(newIndex4)));
  
-          let prevendicularVector2: Vector2D = directionVector.getPerpendicularCounterClockwise();
+          let prevendicularVector2: RealNumberVector = directionVector.getPerpendicularCounterClockwise();
           prevendicularVector2.normalize();
           prevendicularVector2.multiplyByScalar(sizeOfCurrentLineSegment * this.scalePercentage * 0.5);
-          let newEndPoint2 = newInbetweenPoint.getSumWith(prevendicularVector2) as Vector2D;
+          let newEndPoint2 = newInbetweenPoint.getSumWith(prevendicularVector2) as RealNumberVector;
        //   let newIndex5: number = this.vertexArray.push(newEndPoint2) - 1;
        //   this.LineSegments.push(new LineSegmentIndices(new IndexTriplet(newIndex3), new IndexTriplet(newIndex5)));
 

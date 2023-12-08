@@ -1,7 +1,7 @@
 import { AreCoLinear } from '../math/AreCoLinear';
 import { GenericVector } from '../math/GenericVector';
 import { IMathDrawable } from './IMathDrawable';
-import { Vector2D } from '../math/Vector2D';
+import { RealNumberVector } from '../math/RealNumberVector';
 // import { ComplexPoint } from '../math/ComplexPoint';
 import { Pixel } from './Pixel';
 // import { Coordinate2D } from './Coordinate2D';
@@ -46,7 +46,7 @@ export class MathCanvas2D
             // this.onresize(); //not DRY
         }
         this.backgroundColor = backgroundColor;
-        // this.mostRecentCanvasToWorld2DVector = new Vector2D();
+        // this.mostRecentCanvasToWorld2DVector = new RealNumberVector();
         // this.mostRecentCanvasToWorld2DComplex = new ComplexPoint(0, 0);
         // this.mostRecentCoordinate2D = new Coordinate2D();  //TODO:  switch to only this.mostRecentCoordinate2D ?
     }

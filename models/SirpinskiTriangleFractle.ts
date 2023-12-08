@@ -4,7 +4,7 @@ import { MathCanvas2D } from "./MathCanvas2D";
 import { Fractile } from "./Fractile";
 // import { Triangle } from "./TriangleIndices";
 // import { IndexTriplet } from "./IndexTriplet";
-//import { Vector2D } from "../math/Vector2D";
+//import { RealNumberVector } from "../math/RealNumberVector";
 //import { GenericVector } from "../math/GenericVector";
 
 export class SirpinskiTriangleFractile extends Fractile
@@ -15,7 +15,7 @@ export class SirpinskiTriangleFractile extends Fractile
     private seedPoint1: RealNumberVector ;
     private seedPoint2: RealNumberVector ;
     private seedPoint3: RealNumberVector ;
-//    private vertexArray: Array<GenericVector<number>>; //GenericVector allows Vector2D, Vector3D or any other
+//    private vertexArray: Array<GenericVector<number>>; //GenericVector allows RealNumberVector, RealNumberVector or any other
 //    private TriangleList: Array<Triangle> = new Array<Triangle>();
 
     constructor(range?: ScreenRangeConverter2D)

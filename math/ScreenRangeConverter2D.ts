@@ -2,7 +2,7 @@ import { Point2D } from "./Point2D";
 //import { ComplexPoint } from "./ComplexPoint";
 import { GenericVector } from "./GenericVector";
 import { ISize2D } from "./ISize2D";
-import { Vector2D } from "./Vector2D";
+import { RealNumberVector } from "./RealNumberVector";
 import { ICloneable } from "./ICloneable";
 import { Range2D } from "./Range2D";
 
@@ -22,7 +22,7 @@ export class ScreenRangeConverter2D extends Range2D implements ISize2D,  IClonea
     {
         super();
         this.set(xMin, xMax, yMin, yMax, width, height);
-        this.mostRecentCanvasToWorld2DVector = new Vector2D();
+        this.mostRecentCanvasToWorld2DVector = new RealNumberVector();
         this.mostRecentCoordinate2D = new Point2D(0,0); // { x:0, y:0};
         //        this.mostRecentCanvasToWorld2DComplex = new ComplexPoint(0, 0);
         // this.width = width ?? 0;
